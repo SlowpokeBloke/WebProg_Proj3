@@ -17,3 +17,12 @@ if you don't, im deleting it, fuck you.
 if you write your own code, just comment normally. if you dont understand what you wrote, it's ok! we can figure it out :)
 
 if you fuck up the file structure ill fuck up your bone structure
+
+
+--------------------------------------------------------------------------------------------------------
+
+You should separate content (XHTML), presentation (CSS), and behavior (JS). As much as possible, your
+JS code should use styles from the CSS rather than manually setting each style property in the JS.
+Implement the behavior of each onscreen control using JavaScript event handlers defined in your script
+file. For full credit, you must write your code using unobtrusive JavaScript, so that no JavaScript code,
+onclick handlers, etc. are embedded into the XHTML code.
