@@ -1,2 +1,19 @@
 # WebProg_Proj3
 javascript proj
+
+do not modify the file structure without reason (making a new folder for your code is not a valid reason)
+download git for git commands in terminal
+git clone to save a local copy of the repository for you to work on
+git pull if someone has uploaded updates to the branch you're working on (main is a branch)
+  git fetch if the updates really fuck up your code and you dont want to deal with merging until later
+
+make a branch if you're working on a feature that can be isolated. if updates to the main are made that would affect your branch if applied you will need to rebase it
+
+if you fuck up badly, you can delete your branch
+if you fuck up badly, git will remember, why do you think people use this for version history
+
+if you use chatgpt to generate any code i need a full and i mean FULL writeup of each and every function and variable and what they do. post it in the groupchat or some txt/word file alongside your code.
+if you don't, im deleting it, fuck you.
+if you write your own code, just comment normally. if you dont understand what you wrote, it's ok! we can figure it out :)
+
+if you fuck up the file structure ill fuck up your bone structure
