@@ -1,0 +1,10 @@
+.tile{
+  border: 2px solid black;
+}
+.tileNum{
+  font-family: "sans-serif";
+  font-size: 32pt;
+}
+p{
+  text-align: right;
+}
