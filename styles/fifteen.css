@@ -3,13 +3,78 @@ body{
   display: flex;
   flex-direction: column;
 }
-.tile{
-  border: 2px solid black;
+
+.pTable{
+  margin: auto;
+  border-collapse:collapse;
+  border: 5px solid black;
 }
+.pCell{
+  padding: 0;
+}
+
+/** need to clear space between cells*/
+.tile{
+  width: 96px;
+  height: 96px;
+  border: 2px solid black;
+
+  display: flex;
+}
+
+/** sprite offsets for each tile */
+#t1{
+  background: url("/img/background.jpg") 0 0;
+}
+#t2{
+  background: url("/img/background.jpg") -100px 0;
+}
+#t3{
+  background: url("/img/background.jpg") -200px 0;
+}
+#t4{
+  background: url("/img/background.jpg") -300px 0;
+}
+#t5{
+  background: url("/img/background.jpg") 0 -100px;
+}
+#t6{
+  background: url("/img/background.jpg") -100px -100px;
+}
+#t7{
+  background: url("/img/background.jpg") -200px -100px;
+}
+#t8{
+  background: url("/img/background.jpg") -300px -100px;
+}
+#t9{
+  background: url("/img/background.jpg") 0 -200px;
+}
+#t10{
+  background: url("/img/background.jpg") -100px -200px;
+}
+#t11{
+  background: url("/img/background.jpg") -200px -200px;
+}
+#t12{
+  background: url("/img/background.jpg") -300px -200px;
+}
+#t13{
+  background: url("/img/background.jpg") 0 -300px;
+}
+#t14{
+  background: url("/img/background.jpg") -100px -300px;
+}
+#t15{
+  background: url("/img/background.jpg") -200px -300px;
+}
+
 .tileNum{
+  margin: auto;
   font-family: "sans-serif";
   font-size: 32pt;
 }
+
 .movablePiece{
   border-color: red;
   text-decoration: underline;
