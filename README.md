@@ -10,7 +10,7 @@ do not modify the file structure without reason (making a new folder for your co
 make a branch if you're working on a feature that can be isolated. if updates to the main are made that would affect your branch if applied you will need to rebase it
 
 - if you fuck up badly, you can delete your branch
-- if you fuck up badly, git will remember, why do you think people use this for version history
+- if you fuck up badly, git will remember, there's version history, this is literally the version control site
 
 __
 
