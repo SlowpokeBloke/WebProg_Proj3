@@ -1,12 +1,13 @@
+const homeArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
+let tileArr = homeArr;
 window.onload=function(){
-    createGameBoard(16);
-    function setTimer(){
-        /** copy func */
-    }
+    createGameBoard(tileArr.length);
 }
 
+/**creates table of 16 cells for gameboard
+ * each cell (except 16th) contains tile div
+ */
 function createGameBoard(cellCount){
-    /**copy func */
     gameSize = cellCount;
     nRows = Math.floor(Math.sqrt(cellCount));
     nRowCells = nRows;
@@ -15,18 +16,39 @@ function createGameBoard(cellCount){
     gTable.classList.add("pTable");
     gBody=gTable.createTBody();
     gBody.classList.add("pBody");
-    tileNum = 1;
+    tileCtr = 0;
+    tileNum = tileArr[tileCtr];
     for( let i = 0; i < nRows; i++){
         gRow = gBody.insertRow();
         gRow.classList.add("pRow");
         for( let j=0; j < nRowCells;j++){
             gCell = gRow.insertCell();
             gCell.classList.add("pCell");
-            if(tileNum < 16){
-                gCell.innerHTML='<div id="t' + tileNum +'" class="tile"> <div class="tileNum">' + tileNum + '</div></div>' ;
+            if(tileNum < 16 && tileNum != 0){
+                gCell.innerHTML='<div id="t' + tileNum +'" class="tile" value="' + tileNum + '"> <div class="tileNum">' + tileNum + '</div></div>' ;
             }
-            tileNum++;
+            tileCtr++;
+            tileNum=tileArr[tileCtr];
         }
     }
+    
     document.getElementById("board").appendChild(gTable);
+}
+
+function setTimer(){
+    /** copy func */
+}
+
+/** shuffles given array and returns shuffled array */
+function shuffle(arr){
+    var currIndex = arr.length, tmpVal, rndIndex;
+
+    while(currIndex !== 0){
+        rndIndex = Math.floor(Math.random() * currIndex);
+        currIndex -= 1;
+        tmpVal = arr[currIndex];
+        arr[currIndex] = arr[rndIndex];
+        arr[rndIndex] = tmpVal;
+    }
+    return arr;
 }
