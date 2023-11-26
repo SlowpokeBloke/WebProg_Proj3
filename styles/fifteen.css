@@ -79,6 +79,8 @@ body{
   border-color: red;
   text-decoration: underline;
   color: #006600;
+
+  cursor: pointer;
 }
 
 
