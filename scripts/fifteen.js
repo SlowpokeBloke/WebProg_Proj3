@@ -30,7 +30,7 @@ function createGameBoard(gArr){
         board.removeChild(board.lastChild);
     }
 
-    gameSize = gArr.length;
+    gameSize = gArr.length;     //might be redundant
     nRows = Math.floor(Math.sqrt(gArr.length));
     nRowCells = nRows;
 
