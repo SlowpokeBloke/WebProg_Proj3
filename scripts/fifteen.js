@@ -7,9 +7,13 @@ let tileArr = homeArr;  //array to be shuffled
 /**creates table of 16 cells for gameboard
  * each cell (except 16th) contains tile div
  */
-function createGameBoard(cellCount){
-    gameSize = cellCount;
-    nRows = Math.floor(Math.sqrt(cellCount));
+function createGameBoard(gArr){
+    board = document.getElementById("board");
+    while(board.lastChild){
+        board.removeChild(board.lastChild);
+    }
+    gameSize = gArr.length;
+    nRows = Math.floor(Math.sqrt(gArr.length));
     nRowCells = nRows;
 
     var gTable = document.createElement("table");
@@ -18,7 +22,7 @@ function createGameBoard(cellCount){
     gBody.classList.add("pBody");
 
     tileCtr = 0;
-    tileNum = tileArr[tileCtr];
+    tileNum = gArr[tileCtr];
     for( let i = 0; i < nRows; i++){
         gRow = gBody.insertRow();
         gRow.classList.add("pRow");
@@ -31,29 +35,34 @@ function createGameBoard(cellCount){
                 gCell.classList.add("empty");
             }
             tileCtr++;
-            tileNum=tileArr[tileCtr];
+            tileNum=gArr[tileCtr];
         }
     }
     
     document.getElementById("board").appendChild(gTable);
+    addGameHandlers();
 }
 
 function setTimer(){
     /** copy func */
 }
 
+function handleShuffle(){
+    tileArr = shuffle(tileArr);
+    createGameBoard(tileArr);
+}
 /** shuffles given array and returns shuffled array */
-function shuffle(arr){
-    var currIndex = arr.length, tmpVal, rndIndex;
+function shuffle(gArr){
+    var currIndex = gArr.length, tmpVal, rndIndex;
 
     while(currIndex !== 0){
         rndIndex = Math.floor(Math.random() * currIndex);
         currIndex -= 1;
-        tmpVal = arr[currIndex];
-        arr[currIndex] = arr[rndIndex];
-        arr[rndIndex] = tmpVal;
+        tmpVal = gArr[currIndex];
+        gArr[currIndex] = gArr[rndIndex];
+        gArr[rndIndex] = tmpVal;
     }
-    return arr;
+    return gArr;
 }
 
 /**identifies movable tile */
@@ -101,15 +110,19 @@ function handleClick(){
     this.classList.remove("movablePiece");
     currIndex=parseInt(this.title);
     emptyNeighborIndex = findEmptyNeighbor(currIndex); console.log(emptyNeighborIndex);
-    tileArr[emptyNeighborIndex] = tileArr[currIndex];
-    tileArr[currIndex] = 0;
-    //console.log(this.parentNode);
-    currParentNode = this.parentNode;
-    targetParentNode = document.getElementsByClassName("empty")[0];
-    targetParentNode.classList.remove("empty");
-    currParentNode.classList.add("empty");
-    currParentNode.removeChild(this);
-    targetParentNode.appendChild(this);
+    if(emptyNeighborIndex != -1){
+        tileArr[emptyNeighborIndex] = tileArr[currIndex];
+        tileArr[currIndex] = 0;
+        //console.log(this.parentNode);
+        currParentNode = this.parentNode;
+        targetParentNode = document.getElementsByClassName("empty")[0];
+        targetParentNode.classList.remove("empty");
+        currParentNode.classList.add("empty");
+        currParentNode.removeChild(this);
+        targetParentNode.appendChild(this);
+        this.title = emptyNeighborIndex;
+        targetParentNode.title = currIndex;
+    }
 }
 
 /**returns index of empty neighbor if one is found */
@@ -149,13 +162,11 @@ function findEmptyNeighbor(currIndex){
 }
 
 window.onload=function(){
-    createGameBoard(tileArr.length);
-    // document.querySelectorAll("tile").forEach(tile =>{
-    //     tile.addEventListener("hover", handleHover()); //identify tile as movable
-    //     tile.addEventListener("click", handleClick()); //move tile on click
-    // }); 
+    createGameBoard(tileArr);
+}
+
+function addGameHandlers(){
     var tileElemArr = document.querySelectorAll(".tile");
-    //var tileElemArr = [...tileElements];
     for(var i = 0; i < tileElemArr.length; i++){
         tileElemArr[i].addEventListener('mouseover', handleHover);
         tileElemArr[i].addEventListener('mouseout', handleHover);
