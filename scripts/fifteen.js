@@ -1,5 +1,5 @@
 /** effort/time tracking notes (for self ref so i dont forget)
- * base game func - 3pm? to 11:30pm mainly - mc
+ * base game func - nov 25, 3pm? to 11:30pm mainly - mc
  * 
  */
 
