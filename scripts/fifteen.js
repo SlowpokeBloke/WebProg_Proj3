@@ -1,3 +1,19 @@
+/** effort/time tracking notes (for self ref so i dont forget)
+ * base game func - 3pm? to 11:30pm mainly - mc
+ * 
+ */
+
+/** TODO: 
+ * game end behavior - homeArr is kept as constant for comparison
+ * Animations
+ * Game Timer w/ music - could be tied to shuffle handler
+ * puzzle size options - funcs made to be flexible, so homeArr *ideally* should be the only part to be modified
+ * 
+ * cheat - some sort w/ adjacency in mind
+ * multiple tile shift - extension of neighbor check to check all tiles in row/column for empty cell
+*/
+
+
 /** constant array for game completion comparison
  * can be converted to accomodate other puzzle sizes, but working with 15/16 as base
  */
@@ -8,10 +24,12 @@ let tileArr = homeArr;  //array to be shuffled
  * each cell (except 16th) contains tile div
  */
 function createGameBoard(gArr){
+    //clears previous gameboard(gTable) if one exists
     board = document.getElementById("board");
     while(board.lastChild){
         board.removeChild(board.lastChild);
     }
+
     gameSize = gArr.length;
     nRows = Math.floor(Math.sqrt(gArr.length));
     nRowCells = nRows;
@@ -47,6 +65,7 @@ function setTimer(){
     /** copy func */
 }
 
+/** handles shuffle btn click */
 function handleShuffle(){
     tileArr = shuffle(tileArr);
     createGameBoard(tileArr);
@@ -65,14 +84,15 @@ function shuffle(gArr){
     return gArr;
 }
 
-/**identifies movable tile */
+/**identifies movable tile and toggles class for css */
 function handleHover(){
     currIndex=parseInt(this.title);
-    //currIndex = tileArr.indexOf[tileNum]; console.log(currIndex);
     
     var nRowCells = Math.sqrt(tileArr.length); console.log("cells per row: " + nRowCells);
 
-    /** checks each neighbor */
+    /** checks each neighbor
+     * TODO: merge with findEmptyNeighbor func if possible
+     */
     emptyNeighbor = false; console.log("init val " +emptyNeighbor);
     if((currIndex + 1) % nRowCells != 1){   //if not on left side
         console.log("checking left " + currIndex);
@@ -108,6 +128,7 @@ function handleHover(){
 /**moves tile to empty space */
 function handleClick(){
     this.classList.remove("movablePiece");
+
     currIndex=parseInt(this.title);
     emptyNeighborIndex = findEmptyNeighbor(currIndex); console.log(emptyNeighborIndex);
     if(emptyNeighborIndex != -1){
@@ -125,7 +146,7 @@ function handleClick(){
     }
 }
 
-/**returns index of empty neighbor if one is found */
+/**returns index of empty neighbor if one is found, else returns -1 */
 function findEmptyNeighbor(currIndex){
     var nRowCells = Math.sqrt(tileArr.length);
 
@@ -158,13 +179,14 @@ function findEmptyNeighbor(currIndex){
             return currIndex + nRowCells;
         }
     }
-    return -1;
+    return -1;  //-1 = no empty neighbor
 }
 
 window.onload=function(){
-    createGameBoard(tileArr);
+    createGameBoard(tileArr);   //initializes board on load in correct order; TODO: lock board before game start
 }
 
+/** adds event listeners on tiles for mouseover and mouseout (hover), click */
 function addGameHandlers(){
     var tileElemArr = document.querySelectorAll(".tile");
     for(var i = 0; i < tileElemArr.length; i++){
