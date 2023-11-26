@@ -8,7 +8,7 @@
  * Animations
  * Game Timer w/ music - could be tied to shuffle handler
  * puzzle size options - funcs made to be flexible, so homeArr *ideally* should be the only part to be modified
- * 
+ *      - consider multiple css files for each size to map image onto tiles correctly?
  * cheat - some sort w/ adjacency in mind
  * multiple tile shift - extension of neighbor check to check all tiles in row/column for empty cell
 */
