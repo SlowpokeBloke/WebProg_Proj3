@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Fifteen Puzzle</title>
-    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+
     <link rel="stylesheet" href="styles/fifteen.css">
   </head>
   <body>
@@ -16,6 +16,11 @@
 
     <div class="actions">
       <button id="shuffle" onclick="handleShuffle()">Shuffle</button>
+    </div>
+
+    <div>
+      <p id="timer"></p>
+      <button id="stop" onclick="stopTimer()">Stop Time</button><!--For troubleshooting purposes-->
     </div>
 
     <footer>
