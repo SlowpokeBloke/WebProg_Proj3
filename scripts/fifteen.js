@@ -20,6 +20,10 @@
 const homeArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
 let tileArr = homeArr;  //array to be shuffled
 
+//setting up timer variables to be used with several functions
+var timer;
+var seconds = 0;
+
 /**creates table of 16 cells for gameboard
  * each cell (except 16th) contains tile div
  */
@@ -61,14 +65,32 @@ function createGameBoard(gArr){
     addGameHandlers();
 }
 
+//setting up timer
 function setTimer(){
-    /** copy func */
+
+    //clear any existing timer on start
+    clearInterval(timer);
+    seconds = 0;
+
+    timer = setInterval(getSeconds, 1000);
+}
+
+//prints current time to page from inside setTimer function
+function getSeconds(){
+    seconds++;
+    document.getElementById("timer").innerText = "Time Elapsed: " + seconds;
+}
+
+//function to stop time
+function stopTimer() {
+    clearInterval(timer);
 }
 
 /** handles shuffle btn click */
 function handleShuffle(){
     tileArr = shuffle(tileArr);
     createGameBoard(tileArr);
+    setTimer();
 }
 /** shuffles given array and returns shuffled array */
 function shuffle(gArr){
