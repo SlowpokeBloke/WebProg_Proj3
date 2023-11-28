@@ -1,7 +1,6 @@
 /** effort/time tracking notes (for self ref so i dont forget)
  * base game func - nov 25, 3pm? to 11:30pm mainly - mc
- * 
- */
+  */
 
 /** TODO: 
  * game end behavior - homeArr is kept as constant for comparison
@@ -25,35 +24,34 @@ let tileArr = homeArr;  //array to be shuffled
  */
 function createGameBoard(gArr){
     //clears previous gameboard(gTable) if one exists
-    board = document.getElementById("board");
-    while(board.lastChild){
+    let board = document.getElementById("board");
+    while (board.lastChild) {
         board.removeChild(board.lastChild);
     }
 
-    gameSize = gArr.length;     //might be redundant
-    nRows = Math.floor(Math.sqrt(gArr.length));
-    nRowCells = nRows;
+    let nRows = Math.floor(Math.sqrt(gArr.length));
+    let nRowCells = nRows;
 
-    var gTable = document.createElement("table");
+    let gTable = document.createElement("table");
     gTable.classList.add("pTable");
-    gBody=gTable.createTBody();
+    let gBody = gTable.createTBody();
     gBody.classList.add("pBody");
 
-    tileCtr = 0;
-    tileNum = gArr[tileCtr];
-    for( let i = 0; i < nRows; i++){
-        gRow = gBody.insertRow();
+    let tileCtr = 0;
+    let tileNum = gArr[tileCtr];
+    for (let i = 0; i < nRows; i++){
+        let gRow = gBody.insertRow();
         gRow.classList.add("pRow");
-        for( let j=0; j < nRowCells;j++){
-            gCell = gRow.insertCell();
+        for(let j = 0; j < nRowCells; j++){
+            let gCell = gRow.insertCell();
             gCell.classList.add("pCell");
-            if(tileNum < 16 && tileNum != 0){
-                gCell.innerHTML='<div id="t' + tileNum +'" class="tile" title="' + tileCtr + '"> <div class="tileNum">' + tileNum + '</div></div>' ;
-            } else if(tileNum == 0){
+            if (tileNum < 16 && tileNum !== 0) {
+                gCell.innerHTML = '<div id="t' + tileNum + '" class="tile" title="' + tileCtr + '"> <div class="tileNum">' + tileNum + '</div></div>';
+            } else if (tileNum === 0) {
                 gCell.classList.add("empty");
             }
             tileCtr++;
-            tileNum=gArr[tileCtr];
+            tileNum = gArr[tileCtr];
         }
     }
     
@@ -72,7 +70,7 @@ function handleShuffle(){
 }
 /** shuffles given array and returns shuffled array */
 function shuffle(gArr){
-    var currIndex = gArr.length, tmpVal, rndIndex;
+    let currIndex = gArr.length, tmpVal, rndIndex;
 
     while(currIndex !== 0){
         rndIndex = Math.floor(Math.random() * currIndex);
@@ -86,57 +84,57 @@ function shuffle(gArr){
 
 /**identifies movable tile and toggles class for css */
 function handleHover(){
-    currIndex=parseInt(this.title);
+    let currIndex = parseInt(this.title);
     
-    var nRowCells = Math.sqrt(tileArr.length); console.log("cells per row: " + nRowCells);
+    let nRowCells = Math.sqrt(tileArr.length); console.log("cells per row: " + nRowCells);
 
     /** checks each neighbor
      * TODO: merge with findEmptyNeighbor func if possible
      */
-    emptyNeighbor = false; console.log("init val " +emptyNeighbor);
-    if((currIndex + 1) % nRowCells != 1){   //if not on left side
+    let emptyNeighbor = false; console.log("init val " + emptyNeighbor);
+    if((currIndex + 1) % nRowCells !== 1){   //if not on left side
         console.log("checking left " + currIndex);
-        if(tileArr[currIndex-1] == 0){
+        if(tileArr[currIndex - 1] === 0){
             emptyNeighbor = true;
             console.log("left empty");
         }
     }
-    if((currIndex + 1) % nRowCells != 0){   //if not on right side
+    if((currIndex + 1) % nRowCells !== 0){   //if not on right side
         console.log("checking right " + (currIndex + 1));
-        if(tileArr[currIndex + 1] == 0){
+        if(tileArr[currIndex + 1] === 0){
             emptyNeighbor = true;
             console.log("right empty");
         }
     }
     if((currIndex + 1) - nRowCells > 0){    //if not on top row
         console.log("checking top");
-        if(tileArr[currIndex - nRowCells] == 0){
+        if(tileArr[currIndex - nRowCells] === 0){
             emptyNeighbor = true;
             console.log("top empty");
         }
     }
     if((currIndex + 1) + nRowCells <= 16){  //if not on bottom row
         console.log("checking bot");
-        if(tileArr[currIndex + nRowCells] == 0){
+        if(tileArr[currIndex + nRowCells] === 0){
             emptyNeighbor = true;
             console.log("bottom empty " + emptyNeighbor);
         }
     }
-    if(emptyNeighbor == true){this.classList.toggle("movablePiece")};
+    if(emptyNeighbor === true){this.classList.toggle("movablePiece")};
 }
 
 /**moves tile to empty space */
 function handleClick(){
     this.classList.remove("movablePiece");
 
-    currIndex=parseInt(this.title);
-    emptyNeighborIndex = findEmptyNeighbor(currIndex); console.log(emptyNeighborIndex);
-    if(emptyNeighborIndex != -1){
+    let currIndex = parseInt(this.title);
+    let emptyNeighborIndex = findEmptyNeighbor(currIndex); console.log(emptyNeighborIndex);
+    if (emptyNeighborIndex !== -1) {
         tileArr[emptyNeighborIndex] = tileArr[currIndex];
         tileArr[currIndex] = 0;
         //console.log(this.parentNode);
-        currParentNode = this.parentNode;
-        targetParentNode = document.getElementsByClassName("empty")[0];
+        let currParentNode = this.parentNode;
+        let targetParentNode = document.getElementsByClassName("empty")[0];
         targetParentNode.classList.remove("empty");
         currParentNode.classList.add("empty");
         currParentNode.removeChild(this);
@@ -148,33 +146,33 @@ function handleClick(){
 
 /**returns index of empty neighbor if one is found, else returns -1 */
 function findEmptyNeighbor(currIndex){
-    var nRowCells = Math.sqrt(tileArr.length);
+    let nRowCells = Math.sqrt(tileArr.length);
 
     /** checks each neighbor */
-    if((currIndex + 1) % nRowCells != 1){   //if not on left side
+    if((currIndex + 1) % nRowCells !== 1){   //if not on left side
         console.log("checking left " + currIndex);
-        if(tileArr[currIndex-1] == 0){
+        if(tileArr[currIndex - 1] === 0){
             console.log("left empty");
             return currIndex - 1;
         }
     }
-    if((currIndex + 1) % nRowCells != 0){   //if not on right side
+    if((currIndex + 1) % nRowCells !== 0){   //if not on right side
         console.log("checking right " + (currIndex + 1));
-        if(tileArr[currIndex + 1] == 0){
+        if(tileArr[currIndex + 1] === 0){
             console.log("right empty");
             return currIndex + 1;
         }
     }
     if((currIndex + 1) - nRowCells > 0){    //if not on top row
         console.log("checking top");
-        if(tileArr[currIndex - nRowCells] == 0){
+        if(tileArr[currIndex - nRowCells] === 0){
             console.log("top empty");
             return currIndex - nRowCells;
         }
     }
     if((currIndex + 1) + nRowCells <= 16){  //if not on bottom row
         console.log("checking bot");
-        if(tileArr[currIndex + nRowCells] == 0){
+        if(tileArr[currIndex + nRowCells] === 0){
             console.log("bottom empty ");
             return currIndex + nRowCells;
         }
@@ -182,14 +180,14 @@ function findEmptyNeighbor(currIndex){
     return -1;  //-1 = no empty neighbor
 }
 
-window.onload=function(){
+window.onload = function(){
     createGameBoard(tileArr);   //initializes board on load in correct order; TODO: lock board before game start
-}
+};
 
 /** adds event listeners on tiles for mouseover and mouseout (hover), click */
 function addGameHandlers(){
-    var tileElemArr = document.querySelectorAll(".tile");
-    for(var i = 0; i < tileElemArr.length; i++){
+    let tileElemArr = document.querySelectorAll(".tile");
+    for(let i = 0; i < tileElemArr.length; i++){
         tileElemArr[i].addEventListener('mouseover', handleHover);
         tileElemArr[i].addEventListener('mouseout', handleHover);
         tileElemArr[i].addEventListener('click', handleClick);
