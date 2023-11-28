@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <head>
-    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
     <title>Fifteen Puzzle</title>
     <link rel="icon" type="image/x-icon" href="img/favicon.ico">
     <link rel="stylesheet" href="styles/fifteen.css">
@@ -12,14 +12,21 @@
 
     <div id="board" class="puzzleBoard">
     </div>
-    <br/>
+    <br>
 
     <div class="actions">
       <button id="shuffle" onclick="handleShuffle()">Shuffle</button>
     </div>
 
     <footer>
-      <p id="validated">validation placeholder</p> <!--w3 validator + jslint validator (opt)-->
+      <div id="w3c" class="valid">
+        <a href="https://validator.w3.org">
+          <img src="./img/validators/valid-html401.png" alt="Valid HTML">
+        </a>
+        <!-- <a href="https://jigsaw.w3.org/css-validator/">
+          <img src="w3c-css.png" alt="Valid CSS">
+        </a> --> <!--css not validated yet-->
+      </div> <!--w3 validator + jslint validator (opt)-->
     </footer>
 
     <script src="scripts/fifteen.js"></script>
