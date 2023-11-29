@@ -24,6 +24,13 @@ let tileArr = homeArr;  //array to be shuffled
 var timer;
 var seconds = 0;
 
+//setting up music
+var music = new Audio('./music/music.mp3');
+music.loop = true;
+
+//setting up moves counter
+var counter = 0;
+
 /**creates table of 16 cells for gameboard
  * each cell (except 16th) contains tile div
  */
@@ -63,6 +70,8 @@ function createGameBoard(gArr){
     
     document.getElementById("board").appendChild(gTable);
     addGameHandlers();
+    //play gameplay music
+    music.play();
 }
 
 //setting up timer
@@ -70,6 +79,7 @@ function setTimer(){
 
     //clear any existing timer on start
     clearInterval(timer);
+
     seconds = 0;
 
     timer = setInterval(getSeconds, 1000);
@@ -110,14 +120,79 @@ function checkFinish(){
         }
       }
       return true;
+  
+    let seconds = 0;
+
+    timer = setInterval(getSeconds, 1000);
+}
+function setMoves(){
+    counter++;
+    document.getElementById("moves").innerText = counter;
+}
+//prints current time to page from inside setTimer function
+function getSeconds(){
+    seconds++;
+    document.getElementById("timer").innerText = seconds;
+
 }
 
+//function to stop time
+function stopTimer() {
+    clearInterval(timer);
+}
+
+function winAnimation(){
+    /*TO DO*/
+    
+}
+
+//stuff that happens when puzzle is finished
+function endGame(){
+    console.log("END GAME CALLED")
+    stopTimer();
+    winAnimation();
+    
+}
+
+//checks if puzzle is solved
+function checkFinish(){
+    var tempTileArr = document.querySelectorAll(".tileNum"); //gets the number on each card
+    for (var i = 0; i <= tempTileArr.length - 1; i++) {
+        let n = i+1;
+
+        //if number not in order, return false (not solved)
+        if (parseInt(tempTileArr[i].textContent) !== n) {
+          return false;
+        }
+      }
+      return true;
+}
+//checks for first shuffle
+let firstShuffle = false;
 /** handles shuffle btn click */
 function handleShuffle(){
     tileArr = shuffle(tileArr);
 	tileArr = makePuzzleSolvable(tileArr);
     createGameBoard(tileArr);
     setTimer();
+
+    //only play music on first shuffle
+    if (!firstShuffle) {
+        music.play();
+        setTimer();
+        firstShuffle = true;
+    }
+
+    let tiles = document.querySelectorAll('.tile');
+    tiles.forEach(tile => {
+        tile.classList.add('shaking');
+    });
+
+    setTimeout(() => {
+        tiles.forEach(tile => {
+            tile.classList.remove('shaking');
+        });
+    }, 800);
 }
 /** shuffles given array and returns shuffled array */
 function shuffle(gArr){
@@ -245,6 +320,7 @@ function handleClick(){
         targetParentNode.appendChild(this);
         this.title = emptyNeighborIndex;
         targetParentNode.title = currIndex;
+        setMoves();
         if (checkFinish()){
             endGame();
         }
