@@ -2,12 +2,30 @@ body{
   text-align: center;
   display: flex;
   flex-direction: column;
+  background-color: #fff0f9;
 }
 
+h1{
+  font-family: 'Roboto', sans-serif;
+  font-size: 48pt;
+  font-weight: bold;
+  margin: 0;
+  padding: 20px;
+  color: #ff63c3;
+}
+h3{
+  font-family: 'Roboto', sans-serif;
+  font-size: 20pt;
+  font-weight: bold;
+  margin: 0;
+  padding: 20px;
+  color: rgb(35, 35, 35);
+
+}
 .pTable{
   margin: auto;
   border-collapse:collapse;
-  border: 5px solid black;
+  border: 10px solid rgb(35, 35, 35);
 }
 .pCell{
   padding: 0;
@@ -15,13 +33,25 @@ body{
 
 /** need to clear space between cells*/
 .tile{
+  
   width: 96px;
   height: 96px;
-  border: 2px solid black;
-
   display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
+  font-weight: bold;
+  color: #fff;
+  font-size: 24px;
+  transition: all 0.3s ease-in-out,;
+ 
 }
-
+.tile:hover{
+  transform: scale(1.02);
+  z-index: 99;
+}
 /** sprite offsets for each tile */
 #t1{
   background: url("../img/background.jpg") 0 0;
@@ -71,21 +101,90 @@ body{
 
 .tileNum{
   margin: auto;
-  font-family: "sans-serif";
+  font-family: 'Roboto', sans-serif;
   font-size: 32pt;
 }
 
 .movablePiece{
-  border-color: red;
-  text-decoration: underline;
-  color: #006600;
-
   cursor: pointer;
-}
 
+}
 
 
 /* for validator icons */
 footer{
   text-align: right;
+}
+
+/* shaking animation */
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+.shaking {
+  animation: shake 0.8s;
+}
+
+/* for the actions buttons */
+.actions{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+
+}
+.actions button {
+  background-color: #ffaee0; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
+  box-shadow:  0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.actions button:hover {
+  background-color: #ff63c3; 
+  transform: scale(1.02);
+}
+.timer-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow:  0 10px 20px rgba(0, 0, 0, 0.2);
+  border: 5px solid #ffaee0;
+}
+#timer{
+  color: #ff63c3;
+}
+.info{
+  display: flex;
+  gap: 1rem;
+}
+/* for the footer */
+footer{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 1rem;
 }
