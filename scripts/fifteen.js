@@ -26,6 +26,10 @@ var seconds = 0;
 
 //setting up music
 var music = new Audio('./music/music.mp3');
+music.loop = true;
+
+//setting up moves counter
+var counter = 0;
 /**creates table of 16 cells for gameboard
  * each cell (except 16th) contains tile div
  */
@@ -78,11 +82,14 @@ function setTimer(){
 
     timer = setInterval(getSeconds, 1000);
 }
-
+function setMoves(){
+    counter++;
+    document.getElementById("moves").innerText = counter;
+}
 //prints current time to page from inside setTimer function
 function getSeconds(){
     seconds++;
-    document.getElementById("timer").innerText = "Time Elapsed: " + seconds;
+    document.getElementById("timer").innerText = seconds;
 }
 
 //function to stop time
@@ -92,6 +99,7 @@ function stopTimer() {
 
 function winAnimation(){
     /*TO DO*/
+    
 }
 
 //stuff that happens when puzzle is finished
@@ -121,13 +129,25 @@ let firstShuffle = false;
 function handleShuffle(){
     tileArr = shuffle(tileArr);
     createGameBoard(tileArr);
-    setTimer();
+
 
     //only play music on first shuffle
     if (!firstShuffle) {
         music.play();
+        setTimer();
         firstShuffle = true;
     }
+
+    let tiles = document.querySelectorAll('.tile');
+    tiles.forEach(tile => {
+        tile.classList.add('shaking');
+    });
+
+    setTimeout(() => {
+        tiles.forEach(tile => {
+            tile.classList.remove('shaking');
+        });
+    }, 800);
 }
 /** shuffles given array and returns shuffled array */
 function shuffle(gArr){
@@ -202,6 +222,7 @@ function handleClick(){
         targetParentNode.appendChild(this);
         this.title = emptyNeighborIndex;
         targetParentNode.title = currIndex;
+        setMoves();
         if (checkFinish()){
             endGame();
         }
