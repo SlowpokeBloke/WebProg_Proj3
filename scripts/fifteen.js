@@ -19,6 +19,7 @@
  */
 const homeArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
 let tileArr = homeArr;  //array to be shuffled
+var gameStarted = false;
 
 //setting up timer variables to be used with several functions
 var timer;
@@ -139,6 +140,7 @@ function checkFinish(){
 let firstShuffle = false;
 /** handles shuffle btn click */
 function handleShuffle(){
+    gameStarted = true;
     tileArr = shuffle(tileArr);
     createGameBoard(tileArr);
 
@@ -283,10 +285,13 @@ window.onload=function(){
 
 /** adds event listeners on tiles for mouseover and mouseout (hover), click */
 function addGameHandlers(){
-    var tileElemArr = document.querySelectorAll(".tile");
-    for(var i = 0; i < tileElemArr.length; i++){
-        tileElemArr[i].addEventListener('mouseover', handleHover);
-        tileElemArr[i].addEventListener('mouseout', handleHover);
-        tileElemArr[i].addEventListener('click', handleClick);
+    if (gameStarted){
+        var tileElemArr = document.querySelectorAll(".tile");
+        for(var i = 0; i < tileElemArr.length; i++){
+            tileElemArr[i].addEventListener('mouseover', handleHover);
+            tileElemArr[i].addEventListener('mouseout', handleHover);
+            tileElemArr[i].addEventListener('click', handleClick);
+        }
     }
+
 }
