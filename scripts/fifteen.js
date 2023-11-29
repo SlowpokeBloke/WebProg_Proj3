@@ -77,6 +77,46 @@ function setTimer(){
 
     timer = setInterval(getSeconds, 1000);
 }
+
+//prints current time to page from inside setTimer function
+function getSeconds(){
+    seconds++;
+    document.getElementById("timer").innerText = "Time Elapsed: " + seconds;
+}
+
+//function to stop time
+function stopTimer() {
+    clearInterval(timer);
+}
+
+function winAnimation(){
+    /*TO DO*/
+}
+
+//stuff that happens when puzzle is finished
+function endGame(){
+    console.log("END GAME CALLED")
+    stopTimer();
+    winAnimation();
+    
+}
+
+//checks if puzzle is solved
+function checkFinish(){
+    var tempTileArr = document.querySelectorAll(".tileNum"); //gets the number on each card
+    for (var i = 0; i <= tempTileArr.length - 1; i++) {
+        let n = i+1;
+
+        //if number not in order, return false (not solved)
+        if (parseInt(tempTileArr[i].textContent) !== n) {
+          return false;
+        }
+      }
+      return true;
+  
+    let seconds = 0;
+    timer = setInterval(getSeconds, 1000);
+}
 //setting up moves counter
 function setMoves(){
     counter++;
@@ -86,6 +126,7 @@ function setMoves(){
 function getSeconds(){
     seconds++;
     document.getElementById("timer").innerText = seconds;
+
 }
 
 //function to stop time
@@ -124,6 +165,7 @@ function handleShuffle(){
     tileArr = shuffle(tileArr);
 	tileArr = makePuzzleSolvable(tileArr);
     createGameBoard(tileArr);
+    setTimer();
 
     //only play music on first shuffle
     if (!firstShuffle) {
