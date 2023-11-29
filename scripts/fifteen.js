@@ -30,6 +30,7 @@ music.loop = true;
 
 //setting up moves counter
 var counter = 0;
+
 /**creates table of 16 cells for gameboard
  * each cell (except 16th) contains tile div
  */
@@ -78,6 +79,48 @@ function setTimer(){
 
     //clear any existing timer on start
     clearInterval(timer);
+
+    seconds = 0;
+
+    timer = setInterval(getSeconds, 1000);
+}
+
+//prints current time to page from inside setTimer function
+function getSeconds(){
+    seconds++;
+    document.getElementById("timer").innerText = "Time Elapsed: " + seconds;
+}
+
+//function to stop time
+function stopTimer() {
+    clearInterval(timer);
+}
+
+function winAnimation(){
+    /*TO DO*/
+}
+
+//stuff that happens when puzzle is finished
+function endGame(){
+    console.log("END GAME CALLED")
+    stopTimer();
+    winAnimation();
+    
+}
+
+//checks if puzzle is solved
+function checkFinish(){
+    var tempTileArr = document.querySelectorAll(".tileNum"); //gets the number on each card
+    for (var i = 0; i <= tempTileArr.length - 1; i++) {
+        let n = i+1;
+
+        //if number not in order, return false (not solved)
+        if (parseInt(tempTileArr[i].textContent) !== n) {
+          return false;
+        }
+      }
+      return true;
+  
     let seconds = 0;
 
     timer = setInterval(getSeconds, 1000);
@@ -90,6 +133,7 @@ function setMoves(){
 function getSeconds(){
     seconds++;
     document.getElementById("timer").innerText = seconds;
+
 }
 
 //function to stop time
@@ -128,8 +172,9 @@ let firstShuffle = false;
 /** handles shuffle btn click */
 function handleShuffle(){
     tileArr = shuffle(tileArr);
+	tileArr = makePuzzleSolvable(tileArr);
     createGameBoard(tileArr);
-
+    setTimer();
 
     //only play music on first shuffle
     if (!firstShuffle) {
@@ -162,6 +207,59 @@ function shuffle(gArr){
     }
     return gArr;
 }
+//counts the number of inversions in the shuffled array
+function countInversions(gArr) {
+    var inversions = 0;
+    for (var i = 0; i < gArr.length - 1; i++) {
+        for (var j = i + 1; j < gArr.length; j++) {
+            if (gArr[i] > gArr[j] && gArr[i] !== -1 && gArr[j] !== -1) {
+                inversions++;
+            }
+        }
+    }
+    return inversions;
+}
+
+//checks if the puzzle is solvable or unsolvable
+function isPuzzleSolvable(gArr) {
+	//counts inversions
+    var inversions = countInversions(gArr);
+	//calculates width 3x3, 4x4, etc
+    var width = Math.sqrt(gArr.length);
+	//finds index of emtpy tile
+    var emptyTileIndex = gArr.indexOf(-1);
+
+    // Determine row number from the bottom
+    var rowNumber = Math.floor((gArr.length - emptyTileIndex - 1) / width) + 1;
+
+    if (width % 2 !== 0) {
+        // Odd width puzzle
+        return inversions % 2 === 0;
+    } else {
+        // Even width puzzle
+        if (rowNumber % 2 === 0) {
+            // Empty tile in an even row from the bottom
+            return inversions % 2 !== 0;
+        } else {
+            // Empty tile in an odd row from the bottom
+            return inversions % 2 === 0;
+        }
+    }
+}
+
+//If shuffled puzzle is unsolvable it changes the first two elements to make it solvable
+function makePuzzleSolvable(gArr) {
+    while (!isPuzzleSolvable(gArr)) {
+        // Swap the first two elements to change the number of inversions
+        var tmpVal = gArr[0];
+        gArr[0] = gArr[1];
+        gArr[1] = tmpVal;
+    }
+	return gArr;
+
+    // The modified array is now solvable
+}
+
 
 /**identifies movable tile and toggles class for css */
 function handleHover(){
