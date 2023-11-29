@@ -23,6 +23,7 @@ let tileArr = homeArr;  //array to be shuffled
 //setting up timer variables to be used with several functions
 var timer;
 var seconds = 0;
+var minutes = 0;
 
 //setting up music
 var music = new Audio('./music/music.mp3');
@@ -78,7 +79,8 @@ function setTimer(){
 
     //clear any existing timer on start
     clearInterval(timer);
-    let seconds = 0;
+    seconds = 0;
+    minutes = 0;
 
     timer = setInterval(getSeconds, 1000);
 }
@@ -89,7 +91,17 @@ function setMoves(){
 //prints current time to page from inside setTimer function
 function getSeconds(){
     seconds++;
-    document.getElementById("timer").innerText = seconds;
+    if (seconds == 60){
+        seconds = 0;
+        minutes ++;
+    }
+
+    if (seconds < 10){
+        document.getElementById("timer").innerText = "Time Elapsed: " + minutes + ":0" + seconds;
+    } else if (seconds >= 10){
+        document.getElementById("timer").innerText = "Time Elapsed: " + minutes + ":" + seconds;
+    }
+    
 }
 
 //function to stop time
@@ -97,16 +109,16 @@ function stopTimer() {
     clearInterval(timer);
 }
 
-function winAnimation(){
-    /*TO DO*/
-    
+function winNotifacation(){
+    document.querySelector('.winBanner').style.display = 'block'; //changing the banner display to be revealed
+    document.getElementById("winMessage").innerHTML = "Congratulations! You solved it!<br>Have a cookie!";
 }
 
 //stuff that happens when puzzle is finished
 function endGame(){
     console.log("END GAME CALLED")
     stopTimer();
-    winAnimation();
+    winNotifacation();
     
 }
 
