@@ -34,44 +34,38 @@ var counter = 0;
 /**creates table of 16 cells for gameboard
  * each cell (except 16th) contains tile div
  */
-function createGameBoard(gArr){
-    //clears previous gameboard(gTable) if one exists
-    board = document.getElementById("board");
-    while(board.lastChild){
+function createGameBoard(gArr) {
+    const board = document.getElementById("board");
+    while (board.lastChild) {
         board.removeChild(board.lastChild);
     }
 
-    gameSize = gArr.length;     //might be redundant
-    nRows = Math.floor(Math.sqrt(gArr.length));
-    nRowCells = nRows;
-
-    var gTable = document.createElement("table");
+    const gameSize = gArr.length;
+    const nRows = Math.floor(Math.sqrt(gameSize));
+    const nRowCells = nRows;
+    const gTable = document.createElement("table");
     gTable.classList.add("pTable");
-    gBody=gTable.createTBody();
+    const gBody = gTable.createTBody();
     gBody.classList.add("pBody");
 
-    tileCtr = 0;
-    tileNum = gArr[tileCtr];
-    for( let i = 0; i < nRows; i++){
-        gRow = gBody.insertRow();
+    for (let i = 0; i < nRows; i++) {
+        const gRow = gBody.insertRow();
         gRow.classList.add("pRow");
-        for( let j=0; j < nRowCells;j++){
-            gCell = gRow.insertCell();
+
+        for (let j = 0; j < nRowCells; j++) {
+            const gCell = gRow.insertCell();
             gCell.classList.add("pCell");
-            if(tileNum < 16 && tileNum != 0){
-                gCell.innerHTML='<div id="t' + tileNum +'" class="tile" title="' + tileCtr + '"> <div class="tileNum">' + tileNum + '</div></div>' ;
-            } else if(tileNum == 0){
+
+            const tileNum = gArr[i * nRowCells + j];
+            if (tileNum != 0) {
+                gCell.innerHTML = '<div id="t' + tileNum + '" class="tile" style="left:' + (j * 100) + 'px; top:' + (i * 100) + 'px;" title="' + (i * nRowCells + j) + '"> <div class="tileNum">' + tileNum + '</div></div>';
+            } else {
                 gCell.classList.add("empty");
             }
-            tileCtr++;
-            tileNum=gArr[tileCtr];
         }
     }
-    
-    document.getElementById("board").appendChild(gTable);
+    board.appendChild(gTable);
     addGameHandlers();
-    //play gameplay music
-    music.play();
 }
 
 //setting up timer
@@ -79,7 +73,6 @@ function setTimer(){
 
     //clear any existing timer on start
     clearInterval(timer);
-
     seconds = 0;
 
     timer = setInterval(getSeconds, 1000);
@@ -122,9 +115,9 @@ function checkFinish(){
       return true;
   
     let seconds = 0;
-
     timer = setInterval(getSeconds, 1000);
 }
+//setting up moves counter
 function setMoves(){
     counter++;
     document.getElementById("moves").innerText = counter;
@@ -143,7 +136,6 @@ function stopTimer() {
 
 function winAnimation(){
     /*TO DO*/
-    
 }
 
 //stuff that happens when puzzle is finished
@@ -167,8 +159,7 @@ function checkFinish(){
       }
       return true;
 }
-//checks for first shuffle
-let firstShuffle = false;
+
 /** handles shuffle btn click */
 function handleShuffle(){
     tileArr = shuffle(tileArr);
@@ -305,7 +296,7 @@ function handleHover(){
 /**moves tile to empty space */
 function handleClick(){
     this.classList.remove("movablePiece");
-
+    this.classList.add("moveAnimation");
     currIndex=parseInt(this.title);
     emptyNeighborIndex = findEmptyNeighbor(currIndex); console.log(emptyNeighborIndex);
     if(emptyNeighborIndex != -1){
