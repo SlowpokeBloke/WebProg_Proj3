@@ -177,6 +177,13 @@ footer{
 #timer{
   color: #ff63c3;
 }
+.leaderboard{
+  display: flex;
+  gap: 1rem;
+  position: absolute;
+  right: 0;
+  bottom: 50%;
+}
 .info{
   display: flex;
   gap: 1rem;

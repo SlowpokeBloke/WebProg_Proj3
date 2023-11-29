@@ -99,7 +99,18 @@ function endGame(){
     stopTimer();
     winAnimation();
     
+    let bestScores = getBestScores();
+    let newBestTime = !bestScores.bestTime || seconds < parseInt(bestScores.bestTime);
+    let newBestMoves = !bestScores.bestMoves || counter < parseInt(bestScores.bestMoves);
+
+    if (newBestTime || newBestMoves) {
+        saveBestScores(newBestTime ? seconds : bestScores.bestTime, newBestMoves ? counter : bestScores.bestMoves);
+        updateBestScoresDisplay();
+    }
+
 }
+
+
 
 //checks if puzzle is solved
 function checkFinish(){
@@ -122,6 +133,30 @@ function setMoves(){
     counter++;
     document.getElementById("moves").innerText = counter;
 }
+//saves best time & moves to local storage
+function saveBestScores(time, moves) {
+    localStorage.setItem('bestTime', time);
+    localStorage.setItem('bestMoves', moves);
+}
+//gets best time & moves from local storage
+function getBestScores() {
+    return {
+        bestTime: localStorage.getItem('bestTime'),
+        bestMoves: localStorage.getItem('bestMoves')
+    };
+}
+//update display of scores
+function updateBestScoresDisplay() {
+    let bestScores = getBestScores();
+
+    document.getElementById('bestTime').textContent = bestScores.bestTime ? bestScores.bestTime + ' seconds' : '0';
+    document.getElementById('bestMoves').textContent = bestScores.bestMoves ? bestScores.bestMoves + ' moves' : '0';
+}
+//for testing leaderboard purposes
+function clearAllLocalStorage() {
+    localStorage.clear();
+}
+
 //prints current time to page from inside setTimer function
 function getSeconds(){
     seconds++;
@@ -143,11 +178,20 @@ function endGame(){
     console.log("END GAME CALLED")
     stopTimer();
     winAnimation();
+     let bestScores = getBestScores();
+    let newBestTime = !bestScores.bestTime || seconds < bestScores.bestTime;
+    let newBestMoves = !bestScores.bestMoves || counter < bestScores.bestMoves;
+
+    if (newBestTime || newBestMoves) {
+        saveBestScores(newBestTime ? seconds : bestScores.bestTime, newBestMoves ? counter : bestScores.bestMoves);
+        updateBestScoresDisplay();
+    }
     
 }
 
 //checks if puzzle is solved
 function checkFinish(){
+    
     var tempTileArr = document.querySelectorAll(".tileNum"); //gets the number on each card
     for (var i = 0; i <= tempTileArr.length - 1; i++) {
         let n = i+1;
@@ -356,6 +400,8 @@ function findEmptyNeighbor(currIndex){
 
 window.onload=function(){
     createGameBoard(tileArr);   //initializes board on load in correct order; TODO: lock board before game start
+    updateBestScoresDisplay();
+
 }
 
 /** adds event listeners on tiles for mouseover and mouseout (hover), click */
