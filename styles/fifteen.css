@@ -188,3 +188,22 @@ footer{
   bottom: 0;
   padding: 1rem;
 }
+
+/* moving animations for the tiles */
+.moveAnimation{
+  animation: move 0.5s;
+
+}
+/* using the matrix transform to move the tiles */
+@keyframes move {
+  0% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  50% {
+    transform: matrix(1, 0, 0, 1, 0, -10);
+  }
+  100% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  
+}
