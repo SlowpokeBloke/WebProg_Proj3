@@ -124,7 +124,13 @@ h3{
 
 .movablePiece{
   cursor: pointer;
+}
 
+.movablePiece:hover{
+  text-decoration: underline;
+  border: 1px solid red;
+  color: #006600;
+  z-index: 99;
 }
 
 
