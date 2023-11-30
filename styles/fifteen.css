@@ -52,51 +52,68 @@ h3{
   transform: scale(1.02);
   z-index: 99;
 }
+
+.background1 {
+  background-image: url("../img/background1.jpg");
+}
+
+.background2 {
+  background-image: url("../img/background2.jpg");
+}
+
+.background3 {
+  background-image: url("../img/background3.jpg");
+}
+
+.background4 {
+  background-image: url("../img/background4.jpg");
+}
+
 /** sprite offsets for each tile */
 #t1{
-  background: url("../img/background.jpg") 0 0;
+  background-position:  0 0;
 }
 #t2{
-  background: url("../img/background.jpg") -100px 0;
+  background-position:  -100px 0;
 }
 #t3{
-  background: url("../img/background.jpg") -200px 0;
+  background-position:  -200px 0;
 }
 #t4{
-  background: url("../img/background.jpg") -300px 0;
+  background-position:  -300px 0;
 }
 #t5{
-  background: url("../img/background.jpg") 0 -100px;
+  background-position:  0 -100px;
 }
 #t6{
-  background: url("../img/background.jpg") -100px -100px;
+  background-position:  -100px -100px;
 }
 #t7{
-  background: url("../img/background.jpg") -200px -100px;
+  background-position:  -200px -100px;
 }
 #t8{
-  background: url("../img/background.jpg") -300px -100px;
+  background-position:  -300px -100px;
 }
 #t9{
-  background: url("../img/background.jpg") 0 -200px;
+  background-position:  0 -200px;
 }
 #t10{
-  background: url("../img/background.jpg") -100px -200px;
+  background-position:  -100px -200px;
 }
 #t11{
-  background: url("../img/background.jpg") -200px -200px;
+  background-position:  -200px -200px;
 }
 #t12{
-  background: url("../img/background.jpg") -300px -200px;
+  background-position:  -300px -200px;
 }
 #t13{
-  background: url("../img/background.jpg") 0 -300px;
+  background-position:  0 -300px;
 }
 #t14{
-  background: url("../img/background.jpg") -100px -300px;
+  background-position:  -100px -300px;
 }
 #t15{
-  background: url("../img/background.jpg") -200px -300px;
+  background-position: -200px -300px;
 }
 
 .tileNum{
@@ -164,6 +181,26 @@ footer{
   background-color: #ff63c3; 
   transform: scale(1.02);
 }
+
+.selector {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+select {
+  background-color: #ffaee0; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
+  box-shadow:  0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+
 .timer-container{
   display: flex;
   justify-content: center;
