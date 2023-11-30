@@ -34,6 +34,11 @@ let firstShuffle = false;
 //setting up moves counter
 var counter = 0;
 
+//set starting background
+const allBackgrounds = ["background1", "background2", "background3", "background4"];
+let backgrounds = allBackgrounds;
+var background;
+
 /**creates table of 16 cells for gameboard
  * each cell (except 16th) contains tile div
  */
@@ -61,7 +66,7 @@ function createGameBoard(gArr) {
 
             const tileNum = gArr[i * nRowCells + j];
             if (tileNum != 0) {
-                gCell.innerHTML = '<div id="t' + tileNum + '" class="tile" style="left:' + (j * 100) + 'px; top:' + (i * 100) + 'px;" title="' + (i * nRowCells + j) + '"> <div class="tileNum">' + tileNum + '</div></div>';
+                gCell.innerHTML = '<div id="t' + tileNum + '" class="tile '+ background + '" style="left:' + (j * 100) + 'px; top:' + (i * 100) + 'px;" title="' + (i * nRowCells + j) + '"> <div class="tileNum">' + tileNum + '</div></div>';
             } else {
                 gCell.classList.add("empty");
             }
@@ -71,22 +76,43 @@ function createGameBoard(gArr) {
     addGameHandlers();
 }
 
+//function to change background
+function changeBackground() {
+    var select = document.getElementById("backgroundSelect");
+    var selectedBackground = select.options[select.selectedIndex].value;
+    background = selectedBackground;
+
+    var tiles = document.querySelectorAll(".tile");
+
+    for (var i = 0; i < tiles.length; i++) {
+        tiles[i].classList.replace("background1", selectedBackground);
+        tiles[i].classList.replace("background2", selectedBackground);
+        tiles[i].classList.replace("background3", selectedBackground);
+        tiles[i].classList.replace("background4", selectedBackground);
+    }
+}
+
+//gives random background to start
+function randomBack(){
+    //randomizing index
+    let rand = Math.random() * (5 - 1) + 1;
+    let index = Math.floor(rand) - 1;
+    return backgrounds[index];
+}
+
 //setting up timer
 function setTimer(){
 
     //clear any existing timer on start
     clearInterval(timer);
     seconds = 0;
-    minutes = 0;
-
     timer = setInterval(getSeconds, 1000);
 }
 
 //prints current time to page from inside setTimer function
-//prints current time to page from inside setTimer function
 function getSeconds(){
     seconds++;
-	document.getElementById("timer").innerText = seconds;
+    document.getElementById("timer").innerText = seconds;
 }
 
 //function to stop time
@@ -397,6 +423,7 @@ function findEmptyNeighbor(currIndex){
 }
 
 window.onload=function(){
+    background = randomBack();
     createGameBoard(tileArr);   //initializes board on load in correct order; TODO: lock board before game start
     updateBestScoresDisplay();
 
