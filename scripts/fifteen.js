@@ -83,18 +83,10 @@ function setTimer(){
 }
 
 //prints current time to page from inside setTimer function
+//prints current time to page from inside setTimer function
 function getSeconds(){
     seconds++;
-    if (seconds == 60){
-        seconds = 0;
-        minutes ++;
-    }
-
-    if (seconds < 10){
-        document.getElementById("timer").innerText = minutes + ":0" + seconds;
-    } else if (seconds >= 10){
-        document.getElementById("timer").innerText = minutes + ":" + seconds;
-    }
+	document.getElementById("timer").innerText = seconds;
 }
 
 //function to stop time
