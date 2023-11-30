@@ -1,7 +1,7 @@
 /** effort/time tracking notes (for self ref so i dont forget)
  * base game func - nov 25, 3pm? to 11:30pm mainly - mc
  * 
- */
+*/
 
 /** TODO: 
  * game end behavior - homeArr is kept as constant for comparison
@@ -14,12 +14,14 @@
 */
 
 
-/** constant array for game completion comparison
+/**
+ * constant array for game completion comparison
  * can be converted to accomodate other puzzle sizes, but working with 15/16 as base
- */
+*/
 const homeArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
 let tileArr = homeArr;  //array to be shuffled
 var gameStarted = false;
+var isClicked = false; //prevent handleHover call immediately after click
 
 //setting up timer variables to be used with several functions
 var timer;
@@ -39,10 +41,13 @@ const allBackgrounds = ["background1", "background2", "background3", "background
 let backgrounds = allBackgrounds;
 var background;
 
-/**creates table of 16 cells for gameboard
+/**
+ * creates table of 16 cells for gameboard
  * each cell (except 16th) contains tile div
  */
 function createGameBoard(gArr) {
+    console.log("createGameBoard called");
+
     const board = document.getElementById("board");
     while (board.lastChild) {
         board.removeChild(board.lastChild);
@@ -73,11 +78,16 @@ function createGameBoard(gArr) {
         }
     }
     board.appendChild(gTable);
-    addGameHandlers();
+    if(gameStarted){
+        addGameHandlers();
+    }
 }
 
-//function to change background
+/**
+ * changes bg image
+ */
 function changeBackground() {
+    console.log("changeBackground called");
     var select = document.getElementById("backgroundSelect");
     var selectedBackground = select.options[select.selectedIndex].value;
     background = selectedBackground;
@@ -92,7 +102,7 @@ function changeBackground() {
     }
 }
 
-//gives random background to start
+/**selects random bg on initialization */
 function randomBack(){
     //randomizing index
     let rand = Math.random() * (5 - 1) + 1;
@@ -100,31 +110,41 @@ function randomBack(){
     return backgrounds[index];
 }
 
-//setting up timer
+/**
+ * sets up timer
+ */
 function setTimer(){
-
+    console.log("setTimer called");
     //clear any existing timer on start
     clearInterval(timer);
     seconds = 0;
     timer = setInterval(getSeconds, 1000);
 }
 
-//prints current time to page from inside setTimer function
+/**
+ * prints current time to page from inside setTimer function
+ */
 function getSeconds(){
+    console.log("getSeconds called");
     seconds++;
     document.getElementById("timer").innerText = seconds;
 }
 
-//function to stop time
+/**
+ * stops timer
+ */
 function stopTimer() {
+    console.log("stopTimer called");
     clearInterval(timer);
 }
 
-//stuff that happens when puzzle is finished
+/**
+ * handles behavior when puzzle is finished
+ */
 function endGame(){
     console.log("END GAME CALLED")
     stopTimer();
-    winNotifacation();
+    winNotification();
     
     let bestScores = getBestScores();
     let newBestTime = !bestScores.bestTime || seconds < parseInt(bestScores.bestTime);
@@ -134,13 +154,14 @@ function endGame(){
         saveBestScores(newBestTime ? seconds : bestScores.bestTime, newBestMoves ? counter : bestScores.bestMoves);
         updateBestScoresDisplay();
     }
-	winNotifacation();
+	winNotification();
 }
 
 
 
 //checks if puzzle is solved
 function checkFinish(){
+    console.log("checkFinish called");
     var tempTileArr = document.querySelectorAll(".tile"); //gets the number on each card
     for (var i = 0; i <= tempTileArr.length - 1; i++) {
 
@@ -149,59 +170,89 @@ function checkFinish(){
         let titleNum = parseInt(tempTileArr[i].getAttribute("title")) + 1;
         let tileTitle = "t" + titleNum.toString();
 
-        console.log("CHECKF tileID = " + tileID);
-        console.log("CHECKF tileTitle = " + tileTitle);
+        // console.log("CHECKF tileID = " + tileID);
+        // console.log("CHECKF tileTitle = " + tileTitle);
 
         //if number not in order, return false (not solved)
         if (tileID != tileTitle) {
-            console.log("CHECKF inside if false");
+            //console.log("CHECKF inside if false");
           return false;
         }
       }
-      console.log("CHECKF outside loop, return true");
+      //console.log("CHECKF outside loop, return true");
       return true;
 }
-//setting up moves counter
+
+/**
+ * sets up moves counter
+ */
 function setMoves(){
+    console.log("setMoves called");
     counter++;
     document.getElementById("moves").innerText = counter;
 }
-//saves best time & moves to local storage
+
+/**
+ * saves best time & moves to local storage
+ * @param {*} time 
+ * @param {*} moves 
+ */
 function saveBestScores(time, moves) {
+    console.log("saveBestScores called");
     localStorage.setItem('bestTime', time);
     localStorage.setItem('bestMoves', moves);
 }
-//gets best time & moves from local storage
+/**
+ * 
+ * @returns gets best time & retrieves from local storage
+ */
 function getBestScores() {
+    console.log("getBestScores called");
     return {
         bestTime: localStorage.getItem('bestTime'),
         bestMoves: localStorage.getItem('bestMoves')
     };
 }
-//update display of scores
+
+/**
+ * updates score display
+ */
 function updateBestScoresDisplay() {
+    console.log("updateBestScoresDisplay called");
     let bestScores = getBestScores();
 
     document.getElementById('bestTime').textContent = bestScores.bestTime ? bestScores.bestTime + ' seconds' : '0';
     document.getElementById('bestMoves').textContent = bestScores.bestMoves ? bestScores.bestMoves + ' moves' : '0';
 }
-//for testing leaderboard purposes
+
+/**
+ * DEBUG FUNCTION: clears local storage for leaderboard
+ */
 function clearAllLocalStorage() {
+    console.log("cleared local storage");
     localStorage.clear();
 }
 
-//function to stop time
+/**
+ * stops timer
+ */
 function stopTimer() {
+    console.log("timer interval cleared");
     clearInterval(timer);
 }
 
-function winNotifacation(){
+/**
+ * Injects win message in designated banner
+ */
+function winNotification(){
+    console.log("winNotification called");
     document.querySelector('.winBanner').style.display = 'block'; //changing the banner display to be revealed
     document.getElementById("winMessage").innerHTML = "Congratulations! You solved it!<br>Have a cookie!";
 }
 
 /** handles shuffle btn click */
 function handleShuffle(){
+    console.log("handleShuffle called");
     gameStarted = true;
     tileArr = shuffle(tileArr);
 	tileArr = makePuzzleSolvable(tileArr);
@@ -228,6 +279,7 @@ function handleShuffle(){
 }
 /** shuffles given array and returns shuffled array */
 function shuffle(gArr){
+    console.log("shuffle called");
     var currIndex = gArr.length, tmpVal, rndIndex;
 
     while(currIndex !== 0){
@@ -240,7 +292,11 @@ function shuffle(gArr){
     return gArr;
 }
 
-//counts the number of inversions in the shuffled array
+/**
+ * counts the number of inversions in the shuffled array
+ * @param {*} gArr 
+ * @returns 
+ */
 function countInversions(gArr) {
     var inversions = 0;
     for (var i = 0; i < gArr.length - 1; i++) {
@@ -253,7 +309,11 @@ function countInversions(gArr) {
     return inversions;
 }
 
-//checks if the puzzle is solvable or unsolvable
+/**
+ * checks if puzzle is solvable
+ * @param {*} gArr 
+ * @returns 
+ */
 function isPuzzleSolvable(gArr) {
 	//counts inversions
     var inversions = countInversions(gArr);
@@ -292,7 +352,7 @@ function isPuzzleSolvable(gArr) {
         } else { //else empty tile in an odd row from the bottom
 
             //return true if inversions even
-            if (inversions %2 == 0){
+            if (inversions % 2 == 0){
                 return true;
             } else {
                 false;
@@ -301,9 +361,14 @@ function isPuzzleSolvable(gArr) {
     }
 }
 
-//if shuffled puzzle is unsolvable it changes the first two elements non-empty to make it solvable
-function makePuzzleSolvable(gArr) {
 
+/**
+ * if shuffled puzzle is unsolvable it changes the first two elements non-empty to make it solvable
+ * @param {*} gArr 
+ * @returns 
+ */
+function makePuzzleSolvable(gArr) {
+    console.log("makePuzzleSolvable called");
     let i = 0; 
     while (!isPuzzleSolvable(gArr)) {
         //swap the first pair of elements to change the number of inversions
@@ -322,6 +387,7 @@ function makePuzzleSolvable(gArr) {
 
 /**identifies movable tile and toggles class for css */
 function handleHover(){
+    console.log("handleHover called");
     currIndex=parseInt(this.title);
     
     var nRowCells = Math.sqrt(tileArr.length); console.log("cells per row: " + nRowCells);
@@ -355,7 +421,7 @@ function handleHover(){
         console.log("checking bot");
         if(tileArr[currIndex + nRowCells] == 0){
             emptyNeighbor = true;
-            console.log("bottom empty " + emptyNeighbor);
+            console.log("bottom empty ");
         }
     }
     if(emptyNeighbor == true){this.classList.toggle("movablePiece")};
@@ -363,6 +429,7 @@ function handleHover(){
 
 /**moves tile to empty space */
 function handleClick(){
+    console.log("handleClick called");  //debug
     this.classList.remove("movablePiece");
     this.classList.add("moveAnimation");
     currIndex=parseInt(this.title);
@@ -388,6 +455,7 @@ function handleClick(){
 
 /**returns index of empty neighbor if one is found, else returns -1 */
 function findEmptyNeighbor(currIndex){
+    console.log("findEmptyNeighbor called");
     var nRowCells = Math.sqrt(tileArr.length);
 
     /** checks each neighbor */
@@ -431,12 +499,11 @@ window.onload=function(){
 
 /** adds event listeners on tiles for mouseover and mouseout (hover), click */
 function addGameHandlers(){
-    if (gameStarted){
-        var tileElemArr = document.querySelectorAll(".tile");
-        for(var i = 0; i < tileElemArr.length; i++){
-            tileElemArr[i].addEventListener('mouseover', handleHover);
-            tileElemArr[i].addEventListener('mouseout', handleHover);
-            tileElemArr[i].addEventListener('click', handleClick);
-        }
+    console.log("addGameHandlers called");
+    var tileElemArr = document.querySelectorAll(".tile");
+    for(var i = 0; i < tileElemArr.length; i++){
+        tileElemArr[i].addEventListener('mouseenter', handleHover);
+        tileElemArr[i].addEventListener('mouseout', handleHover);
+        tileElemArr[i].addEventListener('click', handleClick);
     }
 }
