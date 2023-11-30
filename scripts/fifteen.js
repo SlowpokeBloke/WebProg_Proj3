@@ -21,7 +21,6 @@
 const homeArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
 let tileArr = homeArr;  //array to be shuffled
 var gameStarted = false;
-var isClicked = false; //prevent handleHover call immediately after click
 
 //setting up timer variables to be used with several functions
 var timer;
