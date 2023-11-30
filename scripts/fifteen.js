@@ -29,6 +29,7 @@ var minutes = 0;
 //setting up music
 var music = new Audio('./music/music.mp3');
 music.loop = true;
+let firstShuffle = false;
 
 //setting up moves counter
 var counter = 0;
@@ -84,7 +85,16 @@ function setTimer(){
 //prints current time to page from inside setTimer function
 function getSeconds(){
     seconds++;
-    document.getElementById("timer").innerText = "Time Elapsed: " + seconds;
+    if (seconds == 60){
+        seconds = 0;
+        minutes ++;
+    }
+
+    if (seconds < 10){
+        document.getElementById("timer").innerText = minutes + ":0" + seconds;
+    } else if (seconds >= 10){
+        document.getElementById("timer").innerText = minutes + ":" + seconds;
+    }
 }
 
 //function to stop time
@@ -92,15 +102,11 @@ function stopTimer() {
     clearInterval(timer);
 }
 
-function winAnimation(){
-    /*TO DO*/
-}
-
 //stuff that happens when puzzle is finished
 function endGame(){
     console.log("END GAME CALLED")
     stopTimer();
-    winAnimation();
+    winNotifacation();
     
     let bestScores = getBestScores();
     let newBestTime = !bestScores.bestTime || seconds < parseInt(bestScores.bestTime);
@@ -110,26 +116,32 @@ function endGame(){
         saveBestScores(newBestTime ? seconds : bestScores.bestTime, newBestMoves ? counter : bestScores.bestMoves);
         updateBestScoresDisplay();
     }
-
+	winNotifacation();
 }
 
 
 
 //checks if puzzle is solved
 function checkFinish(){
-    var tempTileArr = document.querySelectorAll(".tileNum"); //gets the number on each card
+    var tempTileArr = document.querySelectorAll(".tile"); //gets the number on each card
     for (var i = 0; i <= tempTileArr.length - 1; i++) {
-        let n = i+1;
+
+        //manipulating id's and titles to get proper placement comparison
+        let tileID = tempTileArr[i].getAttribute("id");
+        let titleNum = parseInt(tempTileArr[i].getAttribute("title")) + 1;
+        let tileTitle = "t" + titleNum.toString();
+
+        console.log("CHECKF tileID = " + tileID);
+        console.log("CHECKF tileTitle = " + tileTitle);
 
         //if number not in order, return false (not solved)
-        if (parseInt(tempTileArr[i].textContent) !== n) {
+        if (tileID != tileTitle) {
+            console.log("CHECKF inside if false");
           return false;
         }
       }
+      console.log("CHECKF outside loop, return true");
       return true;
-  
-    let seconds = 0;
-    timer = setInterval(getSeconds, 1000);
 }
 //setting up moves counter
 function setMoves(){
@@ -160,21 +172,6 @@ function clearAllLocalStorage() {
     localStorage.clear();
 }
 
-//prints current time to page from inside setTimer function
-function getSeconds(){
-    seconds++;
-    if (seconds == 60){
-        seconds = 0;
-        minutes ++;
-    }
-
-    if (seconds < 10){
-        document.getElementById("timer").innerText = "Time Elapsed: " + minutes + ":0" + seconds;
-    } else if (seconds >= 10){
-        document.getElementById("timer").innerText = "Time Elapsed: " + minutes + ":" + seconds;
-    }
-}
-
 //function to stop time
 function stopTimer() {
     clearInterval(timer);
@@ -183,38 +180,6 @@ function stopTimer() {
 function winNotifacation(){
     document.querySelector('.winBanner').style.display = 'block'; //changing the banner display to be revealed
     document.getElementById("winMessage").innerHTML = "Congratulations! You solved it!<br>Have a cookie!";
-}
-
-//stuff that happens when puzzle is finished
-function endGame(){
-    console.log("END GAME CALLED")
-    stopTimer();
-    winAnimation();
-    let bestScores = getBestScores();
-    let newBestTime = !bestScores.bestTime || seconds < bestScores.bestTime;
-    let newBestMoves = !bestScores.bestMoves || counter < bestScores.bestMoves;
-
-    if (newBestTime || newBestMoves) {
-        saveBestScores(newBestTime ? seconds : bestScores.bestTime, newBestMoves ? counter : bestScores.bestMoves);
-        updateBestScoresDisplay();
-    }
-    winNotifacation();
-    
-}
-
-//checks if puzzle is solved
-function checkFinish(){
-    
-    var tempTileArr = document.querySelectorAll(".tileNum"); //gets the number on each card
-    for (var i = 0; i <= tempTileArr.length - 1; i++) {
-        let n = i+1;
-
-        //if number not in order, return false (not solved)
-        if (parseInt(tempTileArr[i].textContent) !== n) {
-          return false;
-        }
-      }
-      return true;
 }
 
 /** handles shuffle btn click */
@@ -256,12 +221,13 @@ function shuffle(gArr){
     }
     return gArr;
 }
+
 //counts the number of inversions in the shuffled array
 function countInversions(gArr) {
     var inversions = 0;
     for (var i = 0; i < gArr.length - 1; i++) {
         for (var j = i + 1; j < gArr.length; j++) {
-            if (gArr[i] > gArr[j] && gArr[i] !== -1 && gArr[j] !== -1) {
+            if (gArr[i] > gArr[j] && gArr[i] !== 0 && gArr[j] !== 0) {
                 inversions++;
             }
         }
@@ -276,37 +242,63 @@ function isPuzzleSolvable(gArr) {
 	//calculates width 3x3, 4x4, etc
     var width = Math.sqrt(gArr.length);
 	//finds index of emtpy tile
-    var emptyTileIndex = gArr.indexOf(-1);
+    var emptyTileIndex = gArr.indexOf(0);
+    console.log("emptyTileIndex = " + emptyTileIndex);
 
     // Determine row number from the bottom
     var rowNumber = Math.floor((gArr.length - emptyTileIndex - 1) / width) + 1;
 
-    if (width % 2 !== 0) {
-        // Odd width puzzle
-        return inversions % 2 === 0;
-    } else {
-        // Even width puzzle
-        if (rowNumber % 2 === 0) {
-            // Empty tile in an even row from the bottom
-            return inversions % 2 !== 0;
-        } else {
-            // Empty tile in an odd row from the bottom
-            return inversions % 2 === 0;
+    //if odd sized puzzle
+    if (width % 2 != 0) {
+        
+        //return solveable if even inversion
+        if(inversions % 2 == 0){
+            return true;
+        } else{
+            return false;
+        }
+    } 
+    
+    //else even sized puzzle
+    else {
+        
+        //if empty tile in an even row from the bottom
+        if (rowNumber % 2 == 0) {
+            //if inversions odd, return true
+            if(inversions %2 != 0) {
+                return true;
+            } else{
+                return false;
+            }
+        
+        } else { //else empty tile in an odd row from the bottom
+
+            //return true if inversions even
+            if (inversions %2 == 0){
+                return true;
+            } else {
+                false;
+            }
         }
     }
 }
 
-//If shuffled puzzle is unsolvable it changes the first two elements to make it solvable
+//if shuffled puzzle is unsolvable it changes the first two elements non-empty to make it solvable
 function makePuzzleSolvable(gArr) {
+
+    let i = 0; 
     while (!isPuzzleSolvable(gArr)) {
-        // Swap the first two elements to change the number of inversions
-        var tmpVal = gArr[0];
-        gArr[0] = gArr[1];
-        gArr[1] = tmpVal;
+        //swap the first pair of elements to change the number of inversions
+        var tmpVal = gArr[i];
+        gArr[i] = gArr[i+1];
+        gArr[i+1] = tmpVal;
+
+        //do same with next pair if that was ineffective
+        i+=2;
     }
 	return gArr;
 
-    // The modified array is now solvable
+    //modified array is now solvable
 }
 
 
