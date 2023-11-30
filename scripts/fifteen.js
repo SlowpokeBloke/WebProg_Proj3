@@ -504,7 +504,7 @@ function addGameHandlers(){
     console.log("addGameHandlers called");
     var tileElemArr = document.querySelectorAll(".tile");
     for(var i = 0; i < tileElemArr.length; i++){
-        tileElemArr[i].addEventListener('mouseenter', handleHover);
+        tileElemArr[i].addEventListener('mouseover', handleHover);
         tileElemArr[i].addEventListener('mouseout', handleHover);
         tileElemArr[i].addEventListener('click', handleClick);
     }

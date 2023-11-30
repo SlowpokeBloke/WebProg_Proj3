@@ -33,7 +33,6 @@ h3{
 
 /** need to clear space between cells*/
 .tile{
-  
   width: 96px;
   height: 96px;
   display: flex;
@@ -46,7 +45,7 @@ h3{
   color: #fff;
   font-size: 24px;
   transition: all 0.3s ease-in-out,;
- 
+  border:1px solid black;
 }
 .tile:hover{
   transform: scale(1.02);
