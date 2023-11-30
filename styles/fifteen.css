@@ -188,6 +188,20 @@ footer{
   display: flex;
   gap: 1rem;
 }
+.winBanner {
+  display: none; /*hiding the banner initially*/
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  position: fixed;
+  top: 50%;
+  width: 100%;
+  box-shadow: -10px 10px 10px rgba(0, 0, 0, 0.7); 
+}
+
 /* for the footer */
 footer{
   position: absolute;

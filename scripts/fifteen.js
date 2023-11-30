@@ -19,10 +19,12 @@
  */
 const homeArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
 let tileArr = homeArr;  //array to be shuffled
+var gameStarted = false;
 
 //setting up timer variables to be used with several functions
 var timer;
 var seconds = 0;
+var minutes = 0;
 
 //setting up music
 var music = new Audio('./music/music.mp3');
@@ -74,6 +76,7 @@ function setTimer(){
     //clear any existing timer on start
     clearInterval(timer);
     seconds = 0;
+    minutes = 0;
 
     timer = setInterval(getSeconds, 1000);
 }
@@ -160,8 +163,16 @@ function clearAllLocalStorage() {
 //prints current time to page from inside setTimer function
 function getSeconds(){
     seconds++;
-    document.getElementById("timer").innerText = seconds;
+    if (seconds == 60){
+        seconds = 0;
+        minutes ++;
+    }
 
+    if (seconds < 10){
+        document.getElementById("timer").innerText = "Time Elapsed: " + minutes + ":0" + seconds;
+    } else if (seconds >= 10){
+        document.getElementById("timer").innerText = "Time Elapsed: " + minutes + ":" + seconds;
+    }
 }
 
 //function to stop time
@@ -169,8 +180,9 @@ function stopTimer() {
     clearInterval(timer);
 }
 
-function winAnimation(){
-    /*TO DO*/
+function winNotifacation(){
+    document.querySelector('.winBanner').style.display = 'block'; //changing the banner display to be revealed
+    document.getElementById("winMessage").innerHTML = "Congratulations! You solved it!<br>Have a cookie!";
 }
 
 //stuff that happens when puzzle is finished
@@ -178,7 +190,7 @@ function endGame(){
     console.log("END GAME CALLED")
     stopTimer();
     winAnimation();
-     let bestScores = getBestScores();
+    let bestScores = getBestScores();
     let newBestTime = !bestScores.bestTime || seconds < bestScores.bestTime;
     let newBestMoves = !bestScores.bestMoves || counter < bestScores.bestMoves;
 
@@ -186,6 +198,7 @@ function endGame(){
         saveBestScores(newBestTime ? seconds : bestScores.bestTime, newBestMoves ? counter : bestScores.bestMoves);
         updateBestScoresDisplay();
     }
+    winNotifacation();
     
 }
 
@@ -206,6 +219,7 @@ function checkFinish(){
 
 /** handles shuffle btn click */
 function handleShuffle(){
+    gameStarted = true;
     tileArr = shuffle(tileArr);
 	tileArr = makePuzzleSolvable(tileArr);
     createGameBoard(tileArr);
@@ -406,10 +420,12 @@ window.onload=function(){
 
 /** adds event listeners on tiles for mouseover and mouseout (hover), click */
 function addGameHandlers(){
-    var tileElemArr = document.querySelectorAll(".tile");
-    for(var i = 0; i < tileElemArr.length; i++){
-        tileElemArr[i].addEventListener('mouseover', handleHover);
-        tileElemArr[i].addEventListener('mouseout', handleHover);
-        tileElemArr[i].addEventListener('click', handleClick);
+    if (gameStarted){
+        var tileElemArr = document.querySelectorAll(".tile");
+        for(var i = 0; i < tileElemArr.length; i++){
+            tileElemArr[i].addEventListener('mouseover', handleHover);
+            tileElemArr[i].addEventListener('mouseout', handleHover);
+            tileElemArr[i].addEventListener('click', handleClick);
+        }
     }
 }
