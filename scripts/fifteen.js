@@ -125,7 +125,7 @@ function setTimer(){
  * prints current time to page from inside setTimer function
  */
 function getSeconds(){
-    console.log("getSeconds called");
+    //console.log("getSeconds called");
     seconds++;
     document.getElementById("timer").innerText = seconds;
 }
@@ -159,7 +159,10 @@ function endGame(){
 
 
 
-//checks if puzzle is solved
+/**
+ * checks if puzzle is solved
+ * @returns 
+ */
 function checkFinish(){
     console.log("checkFinish called");
     var tempTileArr = document.querySelectorAll(".tile"); //gets the number on each card
@@ -187,7 +190,7 @@ function checkFinish(){
  * sets up moves counter
  */
 function setMoves(){
-    console.log("setMoves called");
+    //console.log("setMoves called");
     counter++;
     document.getElementById("moves").innerText = counter;
 }
@@ -295,7 +298,7 @@ function shuffle(gArr){
 /**
  * counts the number of inversions in the shuffled array
  * @param {*} gArr 
- * @returns 
+ * @returns # of inversions detected in array
  */
 function countInversions(gArr) {
     var inversions = 0;
@@ -365,7 +368,7 @@ function isPuzzleSolvable(gArr) {
 /**
  * if shuffled puzzle is unsolvable it changes the first two elements non-empty to make it solvable
  * @param {*} gArr 
- * @returns 
+ * @returns modified solvable array
  */
 function makePuzzleSolvable(gArr) {
     console.log("makePuzzleSolvable called");
@@ -474,14 +477,14 @@ function findEmptyNeighbor(currIndex){
         }
     }
     if((currIndex + 1) - nRowCells > 0){    //if not on top row
-        console.log("checking top");
+        console.log("checking top " + (currIndex - nRowCells));
         if(tileArr[currIndex - nRowCells] == 0){
             console.log("top empty");
             return currIndex - nRowCells;
         }
     }
     if((currIndex + 1) + nRowCells <= 16){  //if not on bottom row
-        console.log("checking bot");
+        console.log("checking bot " + (currIndex + nRowCells));
         if(tileArr[currIndex + nRowCells] == 0){
             console.log("bottom empty ");
             return currIndex + nRowCells;
