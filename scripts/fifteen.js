@@ -432,7 +432,7 @@ function handleHover(){
 /**moves tile to empty space */
 function handleClick(){
     console.log("handleClick called");  //debug
-    this.classList.remove("movablePiece");
+    //this.classList.remove("movablePiece");
     this.classList.add("moveAnimation");
     currIndex=parseInt(this.title);
     emptyNeighborIndex = findEmptyNeighbor(currIndex); console.log(emptyNeighborIndex);
